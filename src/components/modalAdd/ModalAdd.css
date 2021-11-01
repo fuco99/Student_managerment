@@ -1,0 +1,15 @@
+.ant-btn{
+    height: 40px;
+}
+.ant-btn > span{
+    font-size: 16px;
+}
+.ant-form-item-control-input-content .ant-input{
+    margin: 10px 0;
+}
+.ant-form-item{
+    align-items: center;
+}
+.ant-modal-title{
+    font-size: 20px;
+}
