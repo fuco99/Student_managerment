@@ -1,55 +1,63 @@
 import React, { Component } from 'react';
-import { Modal, Button, DatePicker, Select } from 'antd';
+import { Modal, DatePicker, Select } from 'antd';
 import './ModalAdd.css';
 import { FormProps, FormInstance } from 'antd/lib/form';
 import { Form, Input, } from 'antd';
-import { thisExpression } from '@babel/types';
 import { IStudent } from '../Student';
-import { classes, IClass } from '../Class';
-import { teachers } from '../Teacher';
-import { dataTeacherClass, TeacherClass } from '../TeacherClass';
+import moment, { Moment } from 'moment';
 
-const { RangePicker } = DatePicker;
 const config = {
   rules: [{ type: 'object' as const, required: true, message: 'Please select time!' }],
 };
 
 const { Option } = Select;
-interface ModalEditProps extends FormProps {
- 
+interface ModalEditProps   {
+
 }
 
 interface ModalEditStates {
   isModalVisible: boolean,
   data: {},
-  changed: boolean
-
+  changed: boolean,
+  isEdit?: boolean,
+  student ?: IStudent
 }
 
 export interface Resolver {
-  changed: boolean, data: IStudent
+  changed: boolean,
+  data?: IStudent,
 }
 
-interface ModalData extends IStudent{
-  DatePicker:any;
+export interface ModalData extends IStudent {
+  DatePicker: Moment;
 }
+
 
 class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
   formRef: React.RefObject<FormInstance> = React.createRef();
-  resolve!: (resolver: Resolver) => void;
+  resolver!: (resolver: Resolver) => void;
   constructor(props: ModalEditProps) {
     super(props);
     this.state = {
       isModalVisible: false,
       data: {},
-      changed: false
+      changed: false,
+      isEdit: false
     }
   }
 
-  showModal = async (toogle: boolean) => {
-    return new Promise((resolve, reject) => {
-      this.setState({ isModalVisible: toogle });
-      this.resolve = resolve;
+  showModal = async (toogle: boolean,student ?: IStudent) => {
+    //reset data
+    await this.setState({student:undefined,changed:false})
+    return new Promise<Resolver>((resolve, reject) => {
+      this.formRef?.current?.resetFields()
+      this.setState({ isModalVisible: toogle});
+      
+      setTimeout(()=>{
+        this.formRef?.current?.setFieldsValue({...student,DatePicker: moment(student?.DateOfBirth,"DD/MM/YYYY")})
+      })
+      this.resolver = resolve;
+
     });
   };
 
@@ -58,18 +66,9 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
     try {
       dataInput = (await this.formRef?.current?.validateFields()) as ModalData;
       dataInput.DateOfBirth = dataInput.DatePicker.format("DD/MM/YYYY");
-
-      const resolver: Resolver = {
-        changed: true,
-        data: dataInput
-      };
-      this.resolve(resolver);
-
-      this.setState({
-        isModalVisible: false,
-
-      })
       this.formRef.current?.resetFields()
+      await this.setState({changed:true,student:dataInput})
+      this.handleCancel()
     } catch (e) {
 
     }
@@ -79,6 +78,12 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
     this.setState({
       isModalVisible: false
     })
+    const resolver: Resolver = {
+      changed: this.state.changed,
+      data: this.state.student
+    };
+    this.resolver(resolver);
+
   };
 
   render() {
@@ -97,13 +102,19 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
                 placeholder="Select a option and change input text above"
                 allowClear
               >
-                <Option value="male">Male</Option>
-                <Option value="female">Female</Option>
-                <Option value="other">Other</Option>
+                <Option value="Male">Male</Option>
+                <Option value="Female">Female</Option>
+                <Option value="Other">Other</Option>
               </Select>
             </Form.Item>
-            <Form.Item name="DatePicker" label="DatePicker" {...config} style={{marginBottom: "10px"}}>
+            <Form.Item name="DatePicker" label="DateOfBirth" {...config} style={{ marginBottom: "10px" }}>
               <DatePicker />
+            </Form.Item>
+            <Form.Item name="ClassName" label="ClassName" rules={[{ required: true }]} >
+              <Input />
+            </Form.Item>
+            <Form.Item name="Teacher" label="Teacher" rules={[{ required: true }]} >
+              <Input />
             </Form.Item>
           </Form>
         </Modal>

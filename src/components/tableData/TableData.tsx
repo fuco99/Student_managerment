@@ -1,26 +1,21 @@
-import React, { Component, useState } from 'react';
-import { Table, Tag, Divider, Button, Spin, InputNumber, Input, Form } from 'antd';
+import React, { Component } from 'react';
+import { Table, Divider, Button, Popconfirm } from 'antd';
 import './TableData.css'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined,PlusOutlined } from '@ant-design/icons';
 import { IStudent } from '../Student';
-import { classes, IClass } from '../Class';
-import { Iteacher } from '../Teacher';
 import ModalAdd, { Resolver } from '../modalAdd/ModalAdd';
-import Item from 'antd/lib/list/Item';
 
 
 interface TableDataProps {
   dataStd: IStudent[];
-  deleteStudent: any,
-  addStd: any,
- 
+  deleteStudent: Function,
+
 }
 interface TableDataState {
   items: IStudent[];
 
+
 }
-
-
 
 class TableData extends Component<TableDataProps, TableDataState> {
   modalRef: React.RefObject<ModalAdd> = React.createRef();
@@ -30,22 +25,37 @@ class TableData extends Component<TableDataProps, TableDataState> {
       items: [],
     }
   }
-  
+
   addItem = async () => {
     const { dataStd } = this.props;
-    const resolver = await this.modalRef.current?.showModal(true);
-    const itemStudent: IStudent  = (resolver as Resolver).data
-    dataStd.push(itemStudent);
-    this.setState({
-      items:dataStd
-    })
-    console.log(dataStd);
-  }
-  
-
-  editItem = async () => {
-    const resolver = await this.modalRef.current?.showModal(true);
+    const resolver = await this.modalRef.current?.showModal(true)
     
+    const itemStudent = (resolver as Resolver).data
+    itemStudent && dataStd.push(itemStudent);
+    this.setState({
+      items: dataStd
+    })
+    localStorage.setItem('studentData',JSON.stringify(this.state.items))
+  }
+
+  editItem = async (student:IStudent) => {
+    const { dataStd } = this.props;
+    const resolver = await this.modalRef.current?.showModal(true,student)
+    if(resolver?.changed){
+      const newData = {...resolver.data} 
+
+      student.MSSV = newData.MSSV as string
+      student.Name = newData.Name as string
+      student.Gender = newData.Gender as string
+      student.DateOfBirth = newData.DateOfBirth as string
+      student.Teacher = newData.Teacher as string
+      student.ClassName = newData.ClassName as string
+
+    }
+    this.setState({
+      items: dataStd
+    })
+    localStorage.setItem('studentData',JSON.stringify(this.state.items))
   }
 
   render() {
@@ -71,72 +81,43 @@ class TableData extends Component<TableDataProps, TableDataState> {
         key: 'DateOfBirth',
       },
       {
-        title:'Class code',
-        dataIndex:'Classes',
-        key:'classCode',
-        render: (classes: IClass[] )=> 
-          <>
-          {classes?.map(cl =>
-            <Tag  >
-              {cl.IdClass}
-            </Tag>
-          )}
-          </>
+        title: 'Class name',
+        dataIndex: 'ClassName',
+        key: 'className',
       },
       {
-        title:'Class name',
-        dataIndex:'Classes',
-        key:'className',
-        render: (classes: IClass[] )=> 
-          <>
-          {classes?.map(cl =>
-            <Tag color="blue" >
-              {cl.className}
-            </Tag>
-          )}
-          </>
+        title: 'Teacher',
+        dataIndex: 'Teacher',
+        key: 'teacher',
       },
       {
-        title:'Teachers',
-        dataIndex:'Teachers',
-        key:'teachers',
-        render: (teachers: Iteacher[] )=> 
-          <>
-          {teachers?.map(teacher =>
-            <Tag color="blue" >
-              {teacher.teacherName}
-            </Tag>
-          )}
-          </>
-      },
-      {
-        title:'Action',
-        key:'action',
-        render:(record: IStudent) => 
-            <span>
-             <a style = {{color: "green"}} onClick ={() => this.editItem()}><EditOutlined />Edit</a>
-              <Divider type="vertical" />
-              <a style = {{color: "red"}} onClick = {() =>this.props.deleteStudent(record)} ><DeleteOutlined />Delete</a>
-            </span>
+        title: 'Action',
+        key: 'action',
+        render: (record: IStudent) =>
+          <span>
+            <a style={{ color: "green" }} onClick={() =>{this.editItem(record)}}><EditOutlined />Edit</a>
+            <Divider type="vertical" />
+            <Popconfirm placement="top" title="Are you sure to delete this student?" onConfirm={() => this.props.deleteStudent(record)}>
+              <a style={{ color: "red" }}><DeleteOutlined />Delete</a>
+            </Popconfirm>
+          </span>
       }
     ]
     return (
       <>
         <div style={{ float: "right", marginRight: "44px", marginTop: "10px", display: "inline-block", }}>
           <Button type="primary" onClick={() => this.addItem()}>
-            Add
+          <PlusOutlined />
+            Add student
           </Button>
         </div>
         <Table columns={columns} dataSource={[...this.props.dataStd]} />
-
-        <ModalAdd ref={this.modalRef}/>
+        <ModalAdd ref={this.modalRef} />
       </>
     );
   }
 }
 
 export default TableData;
-
-
 
 

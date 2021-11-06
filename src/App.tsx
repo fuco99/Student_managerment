@@ -2,27 +2,16 @@ import './App.css';
 import 'antd/dist/antd.css';
 import Header from './components/Header';
 import FormSearch from './components/formSearch/FormSearch';
-import React, { Component } from 'react';
+import React from 'react';
 import TableData from './components/tableData/TableData';
-import './components/Class'
-import './components/StudentClass'
-import './components/Teacher'
-import './components/TeacherClass'
 import './components/Student'
 import { StudentData, IStudent } from './components/Student';
-import { classes, IClass } from './components/Class';
-import { Iteacher, teachers } from './components/Teacher';
-import { dataStudentClass, StudentClass } from './components/StudentClass';
-import { dataTeacherClass } from './components/TeacherClass';
-import { Col, Row } from 'antd';
-import ModalAdd from './components/modalAdd/ModalAdd';
 
 interface AppProps {
 }
 
 interface AppState {
   students: IStudent[],
-  data : {},
   studentObj: {}
 }
 class App extends React.Component<AppProps, AppState> {
@@ -30,31 +19,31 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       students: [],
-      data : {},
       studentObj:{}
     }
   }
-
-  load = () => {
-   const students:IStudent [] = StudentData.map((item) => {
-        const studentOfClass = dataStudentClass.filter((stcl) => {return item.MSSV === stcl.StudentId}).map((cl)=> cl.ClassId)
-        const listClass = classes.filter(cl => {return studentOfClass.includes(cl.IdClass)})
-        const teacherOfClass = dataTeacherClass.filter((tcl) => {return listClass.map((listCl) => listCl.IdClass).includes(tcl.ClassId) }).map((tcl) => tcl.TeacherId)
-        const listTeacher = teachers.filter((tc) => {return teacherOfClass.includes(tc.MSGV)})
-
-        item.Classes = listClass
-        item.Teachers = listTeacher
-        return item
-    });
+  componentWillMount() {
+    if(localStorage.getItem('studentData') === null){
+      localStorage.setItem('studentData',JSON.stringify(StudentData));
+    }else{
+      localStorage.getItem('studentData')
+    }
+  }
+  
+  load = () => { 
+    const dt = localStorage.getItem('studentData') as string;
+    const dataStorage = JSON.parse(dt) 
     this.setState({
-      students
+      students: dataStorage
     })
+    
   }
 
   componentDidMount() {
     this.load()
   }
-  // tìm kiếm sinh viên theo tên
+
+  // tìm kiếm sinh viên
   search = (textSearch: string) => {
     var results: IStudent[] = [];
     if (textSearch) {
@@ -62,51 +51,45 @@ class App extends React.Component<AppProps, AppState> {
         if (student.Name.indexOf(textSearch) !== -1) {
           results.push(student);
         }
+        else if(student.MSSV.indexOf(textSearch) !== -1){
+          results.push(student)
+        }
+        else if(student.Gender.indexOf(textSearch) !== -1){
+          results.push(student)
+        }
       });
       this.setState({
         students: results,
       });
     } else {
       this.load()
+      
     }
   }
-
+  
   // Xóa sinh viên 
-  deleteStudent = (student: IStudent) => {
+  deleteStudent = (student: IStudent) => { 
     const tempData = this.state.students.filter((e) => e.MSSV !== student.MSSV);
+    localStorage.setItem('studentData',JSON.stringify(tempData)) 
+    
     this.setState({
-      students: tempData,
+      students: tempData
     })
   }
-  // Thêm sinh viên vào lớp
-  getNewStudent = (idClass : string, idStudent : string) => {
-    var itemStd: StudentClass = {
-      StudentId: '',
-      ClassId: ''
-    };
-    itemStd.StudentId = idStudent
-    itemStd.ClassId = idClass
-
-    var itemStudents = dataStudentClass;
-    itemStudents.push(itemStd)
-    console.log(itemStudents);
-    
-    
-  }
-
-  
   render() {
-    const { students } = this.state 
+    
+  const { students } = this.state 
+  
     return (
       <div className="App">
         <Header />
-        <FormSearch buttonSearch={(textSearch: string) => this.search(textSearch)} /> 
-        { students.length > 0 && <TableData dataStd={students} deleteStudent={(student: IStudent) => this.deleteStudent(student)}
-        addStd={(idClass : string, idStudent : string) => {this.getNewStudent(idClass,idStudent)}}/>}
-        
+        <FormSearch buttonSearch={(textSearch: string) => this.search(textSearch)}/> 
+        { students.length > 0 && <TableData dataStd={students} deleteStudent={(student: IStudent) => this.deleteStudent(student)}/>}
       </div>
     );
   }
 }
 
 export default App;
+
+

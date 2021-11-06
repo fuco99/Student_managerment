@@ -1,49 +1,62 @@
 import React, { Component } from 'react';
-import { Row, Col, Input } from 'antd';
-import ModalAdd from '../modalAdd/ModalAdd';
+import { Row, Col, Input, DatePicker, Button, Form, Select, FormInstance } from 'antd';
 import './FormSearch.css';
-
-
-const { Search } = Input;
+import Search from 'antd/lib/input/Search';
+import moment, { Moment } from 'moment';
+import { RangeValue } from 'rc-picker/lib/interface';
+const { RangePicker } = DatePicker;
 
 interface FormSearchProps {
-    buttonSearch:any,
+    buttonSearch: Function,
 }
 
 interface FormSearchStates {
-    tempValue:string,
+    tempValue: string
+
 }
 
+class FormSearch extends Component<FormSearchProps, FormSearchStates> {
 
-class FormSearch extends Component<FormSearchProps,FormSearchStates> {
-    
-    constructor(props:FormSearchProps){
+    constructor(props: FormSearchProps) {
         super(props);
-        this.state={
-            tempValue:'',   
+        this.state = {
+            tempValue: ''
         }
     }
-     
-    onChange =(e:React.FormEvent<HTMLInputElement>):void =>{
+    onChange = (e: React.FormEvent<HTMLInputElement>): void => {
         this.setState({
             tempValue: e.currentTarget.value
-        })       
-        this.props.buttonSearch(e.currentTarget.value) 
+        })
+        this.props.buttonSearch(e.currentTarget.value)
+    }
+    onChangeDate=(value:RangeValue<any>)=>{
+        const startDate = value?.[0];
+        const endDate = value?.[0];
+        console.log(startDate);
+        console.log(endDate);
     }
     
     render() {
         return (
             <div>
                 <Row>
-                    <Col span={24}>
+                    <Col span={15}>
                         <Search
                             placeholder="input search text"
                             allowClear
-                            enterButton="Search"
+                            type="primary"
                             size="large"
                             onSearch={(text: string) => this.props.buttonSearch(this.state.tempValue)}
-                            onChange = {(e) => this.onChange(e)}
+                            onChange={(e) => this.onChange(e)}
                         />
+                    </Col>
+                    <Col span={8} style={{ display: "flex", marginLeft: "10px" }}>
+                        <RangePicker ranges={{Today: [moment(), moment()],'This Month': [moment().startOf('month'), moment().endOf('month')],}}
+                            showTime
+                            format="YYYY/MM/DD"
+                            onChange={this.onChangeDate}/>
+                        <Button type="primary" onClick={() => {}}>Filter</Button>
+                        <Button onClick={() => {}}>Reset</Button>
                     </Col>
                 </Row>
             </div>
