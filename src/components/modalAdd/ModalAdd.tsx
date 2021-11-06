@@ -54,7 +54,7 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
       this.setState({ isModalVisible: toogle});
       
       setTimeout(()=>{
-        this.formRef?.current?.setFieldsValue({...student,DatePicker: moment(student?.DateOfBirth,"DD/MM/YYYY")})
+        this.formRef?.current?.setFieldsValue({...student,DatePicker: moment(student?.DateOfBirth,"MM/DD/YYYY")})
       })
       this.resolver = resolve;
 
@@ -65,7 +65,7 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
     let dataInput = null;
     try {
       dataInput = (await this.formRef?.current?.validateFields()) as ModalData;
-      dataInput.DateOfBirth = dataInput.DatePicker.format("DD/MM/YYYY");
+      dataInput.DateOfBirth = dataInput.DatePicker.format("MM/DD/YYYY");
       this.formRef.current?.resetFields()
       await this.setState({changed:true,student:dataInput})
       this.handleCancel()

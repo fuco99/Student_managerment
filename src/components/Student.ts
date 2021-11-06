@@ -11,7 +11,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "001",
         Name: "nguyen thi admin",
-        DateOfBirth: "23/10/1999",
+        DateOfBirth: "10/23/1999",
         Gender: "Female",
         ClassName: "Giải tích I",
         Teacher: "nguyen thi anh"
@@ -19,7 +19,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "002",
         Name: "nguyen van chuoi",
-        DateOfBirth: "23/09/1996",
+        DateOfBirth: "09/23/1996",
         Gender: "Male",
         ClassName: "Giải tích II",
         Teacher: "nguyen van hai"
@@ -27,7 +27,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "003",
         Name: "dang thi khoai",
-        DateOfBirth: "22/11/1998",
+        DateOfBirth: "11/22/1998",
         Gender: "Female",
         ClassName: "Giải tích II",
         Teacher: "nguyen van hai"
@@ -35,7 +35,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "004",
         Name: "hoang van binh",
-        DateOfBirth: "23/02/1994",
+        DateOfBirth: "02/23/1994",
         Gender: "Male",
         ClassName: "Giải tích III",
         Teacher: "dang hai dang"
@@ -43,7 +43,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "009",
         Name: "nguyen duy thai",
-        DateOfBirth: "23/06/1994",
+        DateOfBirth: "06/23/1994",
         Gender: "Male",
         ClassName: "Giải tích III",
         Teacher: "dang hai dang"
@@ -51,7 +51,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "010",
         Name: "pham phuong nhi",
-        DateOfBirth: "30/09/1994",
+        DateOfBirth: "09/30/1994",
         Gender: "Male",
         ClassName: "Giải tích III",
         Teacher: "dang hai dang"
@@ -59,7 +59,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "005",
         Name: "kieu thi ha",
-        DateOfBirth: "25/05/1995",
+        DateOfBirth: "05/25/1995",
         Gender: "Female",
         ClassName: "Phương pháp tính",
         Teacher: "hoang nam"
@@ -68,7 +68,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "006",
         Name: "nguyen van a",
-        DateOfBirth: "24/07/1992",
+        DateOfBirth: "07/24/1992",
         Gender: "Male",
         ClassName: "Phương pháp tính",
         Teacher: "hoang nam"
@@ -76,7 +76,7 @@ export const StudentData: IStudent[] = [
     {
         MSSV: "007",
         Name: "pham thi b",
-        DateOfBirth: "22/12/1995",
+        DateOfBirth: "12/22/1995",
         Gender: "Female",
         ClassName: "Phương pháp tính",
         Teacher: "hoang nam"

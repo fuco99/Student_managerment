@@ -6,6 +6,7 @@ import React from 'react';
 import TableData from './components/tableData/TableData';
 import './components/Student'
 import { StudentData, IStudent } from './components/Student';
+import moment from 'moment';
 
 interface AppProps {
 }
@@ -19,24 +20,24 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       students: [],
-      studentObj:{}
+      studentObj: {}
     }
   }
   componentWillMount() {
-    if(localStorage.getItem('studentData') === null){
-      localStorage.setItem('studentData',JSON.stringify(StudentData));
-    }else{
+    if (localStorage.getItem('studentData') === null) {
+      localStorage.setItem('studentData', JSON.stringify(StudentData));
+    } else {
       localStorage.getItem('studentData')
     }
   }
-  
-  load = () => { 
+
+  load = () => {
     const dt = localStorage.getItem('studentData') as string;
-    const dataStorage = JSON.parse(dt) 
+    const dataStorage = JSON.parse(dt)
     this.setState({
       students: dataStorage
     })
-    
+
   }
 
   componentDidMount() {
@@ -51,10 +52,10 @@ class App extends React.Component<AppProps, AppState> {
         if (student.Name.indexOf(textSearch) !== -1) {
           results.push(student);
         }
-        else if(student.MSSV.indexOf(textSearch) !== -1){
+        else if (student.MSSV.indexOf(textSearch) !== -1) {
           results.push(student)
         }
-        else if(student.Gender.indexOf(textSearch) !== -1){
+        else if (student.Gender.indexOf(textSearch) !== -1) {
           results.push(student)
         }
       });
@@ -63,28 +64,39 @@ class App extends React.Component<AppProps, AppState> {
       });
     } else {
       this.load()
-      
+
     }
   }
-  
+  searchByDate = (startDate: moment.Moment, endDate: moment.Moment) => {
+    var results: IStudent[] = [];
+    this.state.students.forEach((student) => {
+      const compairDate = moment(student.DateOfBirth)
+      if (compairDate.isBetween(startDate, endDate)) {
+        results.push(student)
+      }
+    })
+    this.setState({
+      students: results
+    })
+  }
   // Xóa sinh viên 
-  deleteStudent = (student: IStudent) => { 
+  deleteStudent = (student: IStudent) => {
     const tempData = this.state.students.filter((e) => e.MSSV !== student.MSSV);
-    localStorage.setItem('studentData',JSON.stringify(tempData)) 
-    
+    localStorage.setItem('studentData', JSON.stringify(tempData))
+
     this.setState({
       students: tempData
     })
   }
   render() {
-    
-  const { students } = this.state 
-  
+
+    const { students } = this.state
+
     return (
       <div className="App">
         <Header />
-        <FormSearch buttonSearch={(textSearch: string) => this.search(textSearch)}/> 
-        { students.length > 0 && <TableData dataStd={students} deleteStudent={(student: IStudent) => this.deleteStudent(student)}/>}
+        <FormSearch buttonSearch={(textSearch: string) => this.search(textSearch)} buttonFilter={(startDate: moment.Moment, endDate: moment.Moment) => { this.searchByDate(startDate, endDate) }} />
+        {students.length > 0 && <TableData dataStd={students} deleteStudent={(student: IStudent) => this.deleteStudent(student)} />}
       </div>
     );
   }
