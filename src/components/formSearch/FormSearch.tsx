@@ -39,6 +39,7 @@ class FormSearch extends Component<FormSearchProps, FormSearchStates> {
             StartDate: startDate,
             EndDate: endDate
         })
+        this.props.buttonFilter(startDate, endDate)
     }
    
     render() {
@@ -62,6 +63,7 @@ class FormSearch extends Component<FormSearchProps, FormSearchStates> {
                             onChange={this.onChangeDate}
                         />
                         <Button type="primary" onClick ={() => this.props.buttonFilter(this.state.StartDate, this.state.EndDate)}>Filter</Button>
+                       
                     </Col>
                 </Row>
             </div>

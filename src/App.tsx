@@ -69,15 +69,20 @@ class App extends React.Component<AppProps, AppState> {
   }
   searchByDate = (startDate: moment.Moment, endDate: moment.Moment) => {
     var results: IStudent[] = [];
-    this.state.students.forEach((student) => {
+    if(startDate != undefined && endDate != undefined){
+      this.state.students.forEach((student) => {
       const compairDate = moment(student.DateOfBirth)
       if (compairDate.isBetween(startDate, endDate)) {
         results.push(student)
       }
-    })
-    this.setState({
-      students: results
-    })
+      })
+      this.setState({
+        students: results
+      })
+    }else{
+      this.load()
+    }
+    
   }
   // Xóa sinh viên 
   deleteStudent = (student: IStudent) => {

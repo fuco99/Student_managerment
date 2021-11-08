@@ -4,6 +4,7 @@ import './TableData.css'
 import { DeleteOutlined, EditOutlined,PlusOutlined } from '@ant-design/icons';
 import { IStudent } from '../Student';
 import ModalAdd, { Resolver } from '../modalAdd/ModalAdd';
+import { thisExpression } from '@babel/types';
 
 
 interface TableDataProps {
@@ -37,7 +38,6 @@ class TableData extends Component<TableDataProps, TableDataState> {
     })
     localStorage.setItem('studentData',JSON.stringify(this.state.items))
   }
-
   editItem = async (student:IStudent) => {
     const { dataStd } = this.props;
     const resolver = await this.modalRef.current?.showModal(true,student)
