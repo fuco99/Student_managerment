@@ -32,7 +32,7 @@ class FormSearch extends Component<FormSearchProps, FormSearchStates> {
         })
         this.props.buttonSearch(e.currentTarget.value)
     }
-    onChangeDate = (value: RangeValue<any>) => {
+    onChangeDate=(value:RangeValue<any>)=>{
         const startDate = (value?.[0])
         const endDate = (value?.[1])
         this.setState({
@@ -41,15 +41,15 @@ class FormSearch extends Component<FormSearchProps, FormSearchStates> {
         })
         this.props.buttonFilter(startDate, endDate)
     }
-
+   
     render() {
-
+        
         return (
             <div>
                 <Row>
                     <Col span={15}>
                         <Search
-                            placeholder="Input search text"
+                            placeholder="input search text"
                             allowClear
                             size="large"
                             enterButton
@@ -58,12 +58,12 @@ class FormSearch extends Component<FormSearchProps, FormSearchStates> {
                         />
                     </Col>
                     <Col span={8} style={{ display: "flex", marginLeft: "10px" }}>
-                        <RangePicker
+                        <RangePicker 
                             format="YYYY/MM/DD"
                             onChange={this.onChangeDate}
                         />
-                        <Button type="primary" onClick={() => this.props.buttonFilter(this.state.StartDate, this.state.EndDate)}>Filter</Button>
-
+                        <Button type="primary" onClick ={() => this.props.buttonFilter(this.state.StartDate, this.state.EndDate)}>Filter</Button>
+                       
                     </Col>
                 </Row>
             </div>

@@ -86,13 +86,13 @@ class TableData extends Component<TableDataProps, TableDataState> {
         title: 'Action',
         key: 'action',
         render: (record: IStudent) =>
-          <>
-            <span style={{ color: "green", cursor: "pointer" }} onClick={() => { this.editItem(record) }}><EditOutlined />Edit</span>
+          <span>
+            <a style={{ color: "green" }} onClick={() => { this.editItem(record) }}><EditOutlined />Edit</a>
             <Divider type="vertical" />
             <Popconfirm placement="top" title="Are you sure to delete this student?" onConfirm={() => this.props.deleteStudent(record)}>
-              <span style={{ color: "red", cursor: "pointer" }}><DeleteOutlined />Delete</span>
+              <a style={{ color: "red" }}><DeleteOutlined />Delete</a>
             </Popconfirm>
-          </>
+          </span>
       }
     ]
     return (

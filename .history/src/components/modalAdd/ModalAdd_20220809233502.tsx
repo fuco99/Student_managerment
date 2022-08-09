@@ -87,6 +87,7 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
   };
 
   render() {
+    console.log(this.state.student)
     return (
       <>
         <Modal title={this.state.student?.MSSV !== '' ? 'Thêm sinh viên' : "Cập nhật thông tin sinh viên"} visible={this.state.isModalVisible} onOk={() => this.saveItem()} onCancel={() => this.handleCancel()}>

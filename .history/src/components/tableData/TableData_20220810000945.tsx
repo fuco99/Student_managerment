@@ -3,17 +3,20 @@ import { Table, Divider, Button, Popconfirm } from 'antd';
 import './TableData.css'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { IStudent } from '../Student';
-import ModalDetail, { Resolver } from '../modalDetail/ModalDetail';
+import ModalAdd, { Resolver } from '../modalAdd/ModalAdd';
 interface TableDataProps {
   dataStd: IStudent[];
   deleteStudent: Function,
+
 }
 interface TableDataState {
   items: IStudent[];
+
+
 }
 
 class TableData extends Component<TableDataProps, TableDataState> {
-  modalRef: React.RefObject<ModalDetail> = React.createRef();
+  modalRef: React.RefObject<ModalAdd> = React.createRef();
   constructor(props: TableDataProps) {
     super(props);
     this.state = {
@@ -24,6 +27,7 @@ class TableData extends Component<TableDataProps, TableDataState> {
   addItem = async () => {
     const { dataStd } = this.props;
     const resolver = await this.modalRef.current?.showModal(true,)
+
     const itemStudent = (resolver as Resolver).data
     itemStudent && dataStd.push(itemStudent);
     this.setState({
@@ -43,6 +47,7 @@ class TableData extends Component<TableDataProps, TableDataState> {
       student.DateOfBirth = newData.DateOfBirth as string
       student.Teacher = newData.Teacher as string
       student.ClassName = newData.ClassName as string
+
     }
     this.setState({
       items: dataStd
@@ -86,13 +91,13 @@ class TableData extends Component<TableDataProps, TableDataState> {
         title: 'Action',
         key: 'action',
         render: (record: IStudent) =>
-          <>
-            <span style={{ color: "green", cursor: "pointer" }} onClick={() => { this.editItem(record) }}><EditOutlined />Edit</span>
+          <span>
+            <a style={{ color: "green" }} onClick={() => { this.editItem(record) }}><EditOutlined />Edit</a>
             <Divider type="vertical" />
             <Popconfirm placement="top" title="Are you sure to delete this student?" onConfirm={() => this.props.deleteStudent(record)}>
-              <span style={{ color: "red", cursor: "pointer" }}><DeleteOutlined />Delete</span>
+              <a style={{ color: "red" }}><DeleteOutlined />Delete</a>
             </Popconfirm>
-          </>
+          </span>
       }
     ]
     return (
@@ -104,7 +109,7 @@ class TableData extends Component<TableDataProps, TableDataState> {
           </Button>
         </div>
         <Table columns={columns} dataSource={[...this.props.dataStd]} />
-        <ModalDetail ref={this.modalRef} dataStd={[...this.props.dataStd]} />
+        <ModalAdd ref={this.modalRef} dataStd={[...this.props.dataStd]} />
       </>
     );
   }

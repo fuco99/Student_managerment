@@ -90,7 +90,7 @@ class TableData extends Component<TableDataProps, TableDataState> {
             <span style={{ color: "green", cursor: "pointer" }} onClick={() => { this.editItem(record) }}><EditOutlined />Edit</span>
             <Divider type="vertical" />
             <Popconfirm placement="top" title="Are you sure to delete this student?" onConfirm={() => this.props.deleteStudent(record)}>
-              <span style={{ color: "red", cursor: "pointer" }}><DeleteOutlined />Delete</span>
+              <span style={{ color: "red" }}><DeleteOutlined />Delete</span>
             </Popconfirm>
           </>
       }
