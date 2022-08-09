@@ -89,7 +89,7 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
   render() {
     return (
       <>
-        <Modal title={this.state.student?.MSSV !== '' ? 'Thêm sinh viên' : "Cập nhật thông tin sinh viên"} visible={this.state.isModalVisible} onOk={() => this.saveItem()} onCancel={() => this.handleCancel()}>
+        <Modal title={this.state.student?.MSSV == '' ? 'Thêm sinh viên' : "Cập nhật thông tin sinh viên"} visible={this.state.isModalVisible} onOk={() => this.saveItem()} onCancel={() => this.handleCancel()}>
           <Form ref={this.formRef} labelCol={{ span: 7 }} wrapperCol={{ span: 17 }} layout="horizontal">
             <Form.Item name='MSSV' label="MSSV" rules={[{ required: true }]}>
               <Input />
@@ -99,7 +99,7 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
             </Form.Item>
             <Form.Item name="Gender" label="Gender" rules={[{ required: true }]} style={{ marginBottom: '10px' }}>
               <Select
-                placeholder="Select a option"
+                placeholder="Select a option and change input text above"
                 allowClear
               >
                 <Option value="Male">Male</Option>

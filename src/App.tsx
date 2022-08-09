@@ -55,7 +55,7 @@ class App extends React.Component<AppProps, AppState> {
         else if (student.MSSV.indexOf(textSearch) !== -1) {
           results.push(student)
         }
-        else if (student.Gender.indexOf(textSearch) !== -1) {
+        else if (student.Gender.includes(textSearch)) {
           results.push(student)
         }
       });
@@ -69,7 +69,7 @@ class App extends React.Component<AppProps, AppState> {
   }
   searchByDate = (startDate: moment.Moment, endDate: moment.Moment) => {
     var results: IStudent[] = [];
-    if(startDate != undefined && endDate != undefined){
+    if(startDate !== undefined && endDate !== undefined){
       this.state.students.forEach((student) => {
       const compairDate = moment(student.DateOfBirth)
       if (compairDate.isBetween(startDate, endDate)) {

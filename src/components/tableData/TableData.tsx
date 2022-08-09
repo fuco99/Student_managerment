@@ -29,7 +29,7 @@ class TableData extends Component<TableDataProps, TableDataState> {
 
   addItem = async () => {
     const { dataStd } = this.props;
-    const resolver = await this.modalRef.current?.showModal(true)
+    const resolver = await this.modalRef.current?.showModal(true,)
     
     const itemStudent = (resolver as Resolver).data
     itemStudent && dataStd.push(itemStudent);

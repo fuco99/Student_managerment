@@ -99,7 +99,7 @@ class ModalEdit extends Component<ModalEditProps, ModalEditStates> {
             </Form.Item>
             <Form.Item name="Gender" label="Gender" rules={[{ required: true }]} style={{ marginBottom: '10px' }}>
               <Select
-                placeholder="Select a option"
+                placeholder="Select a option and change input text above"
                 allowClear
               >
                 <Option value="Male">Male</Option>

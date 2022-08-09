@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Input, DatePicker, Button, Form, Select, FormInstance } from 'antd';
+import { Row, Col, DatePicker, Button } from 'antd';
 import './FormSearch.css';
 import Search from 'antd/lib/input/Search';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { RangeValue } from 'rc-picker/lib/interface';
 const { RangePicker } = DatePicker;
 
